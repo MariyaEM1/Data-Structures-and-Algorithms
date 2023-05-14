@@ -1,0 +1,40 @@
+//https://www.hackerrank.com/contests/sda-hw-9-2021/challenges/1-126-1
+
+#include <cmath>
+#include <cstdio>
+#include <vector>
+#include <iostream>
+#include <algorithm>
+#include <iostream>
+#include<unordered_map>
+#include<unordered_set>
+using namespace std;
+
+int main()
+{
+    int N, dv, kv, breakD=0;
+    //unordered_map<int, int> D;
+    vector<int> d;
+    unordered_multiset<int> K;
+    vector<int> k;
+    cin >> N;
+    for (int i = 0; i < N; i++)
+    {
+        cin >> kv;
+        k.push_back(kv);
+    }
+    for (int i = 0; i < N; i++)
+    {
+        cin >> dv;
+        d.push_back(dv);
+    }
+    for (int i = 0; i < N; i++)
+    {
+        K.insert(k[i]);
+        if (K.find(d[i])==K.end()) breakD++;
+        else {
+            K.erase(K.find(d[i]));
+        }
+    }
+    cout << breakD;
+}
