@@ -1,0 +1,32 @@
+//https://www.hackerrank.com/contests/sda-hw-3/challenges/challenge-3066
+
+#include <cmath>
+#include <cstdio>
+#include <vector>
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+unsigned long long cubeRoot(unsigned long long n) {
+    for (unsigned long long i = 0; i <= n + 1; i++) {
+        unsigned long long cube = i * i * i;
+        if (cube > n) {
+            cube = (i - 1) * (i - 1) * (i - 1);
+            return cube;
+
+        }
+    }
+    return 0;
+}
+
+int main() {
+        unsigned long long n;
+    cin >> n;
+    unsigned long long counter = 0;
+    while (n != 0) {
+        n -= cubeRoot(n);
+        counter++;
+    }
+    cout << counter;
+    return 0;
+}
