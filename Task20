@@ -1,0 +1,136 @@
+//https://www.hackerrank.com/contests/sda-hw-6-2021/challenges/--108
+
+#include <cmath>
+#include <cstdio>
+#include <vector>
+#include <iostream>
+#include <algorithm>
+#include <stack>
+#include<queue>
+using namespace std;
+
+class Node {
+    public:
+        int key;
+        Node *left;
+        Node *right;
+        Node(int d) {
+            key = d;
+            left = NULL;
+            right = NULL;
+        }
+};
+class BST{
+public:
+    int r;
+    Node* root;
+    BST() {
+        root = nullptr;
+        r = 0;
+    }
+    Node* insert(Node* root, int key) {
+        if (root == nullptr) {
+            return new Node(key);
+        }
+        if (key < root->key)
+            root->left = insert(root->left, key);
+        else if (key > root->key)
+            root->right = insert(root->right, key);
+        return root;
+    }
+    void secondLargestUtil(Node* root, int& c, int K)
+    {
+        if (root == NULL || c > K)
+            return ;
+
+        secondLargestUtil(root->right, c, K);
+        c++;
+        if (c == K)
+        {
+            r=root->key;
+        }
+        secondLargestUtil(root->left, c, K);
+    }
+    void secondLargest(Node* root, int K)
+    {
+        int c = 0;
+
+        secondLargestUtil(root, c, K);
+    }
+    Node* deleteNode(Node* current, int key) {
+        if (current == NULL) return current;
+
+        if (key < current->key)
+            current->left = deleteNode(current->left, key);
+        else if (key > current->key)
+            current->right = deleteNode(current->right, key);
+        else {
+            if (current->left == NULL) {
+                Node* temp = current->right;
+                free(current);
+                return temp;
+            }
+            else if (current->right == NULL) {
+                Node* temp = current->left;
+                free(current);
+                return temp;
+            }
+            Node* temp = minValueNode(current->right);
+            current->key = temp->key;
+            current->right = deleteNode(current->right, temp->key);
+        }
+        return current;
+    }
+    Node* minValueNode(Node* node)
+    {
+        Node* current = node;
+        while (current->left != NULL)
+            current = current->left;
+        return current;
+    }
+    /*void print(int N) {
+
+        queue<Node*> q;
+        q.push(root);
+        for (int i = 1; i < N; i++)
+        {
+            if (q.front()->left != nullptr) {
+                q.push(q.front()->left);
+            }
+            if (q.front()->right != nullptr) {
+                q.push(q.front()->right);
+            }
+            cout << q.front()->key << ' ';
+            q.pop();
+
+        }
+    }*/
+};
+
+
+int main()
+{
+    BST Tree;
+    int N, n, K, num;
+    cin >> N >> K;
+    num = N;
+    while (N-- > 0) {
+        cin >> n;
+        Tree.root = Tree.insert(Tree.root, n);
+    }
+    Tree.secondLargest(Tree.root, K);
+    Tree.deleteNode(Tree.root, Tree.r);
+    queue<Node*> q;
+    q.push(Tree.root);
+    for (int i = 1; i < num; i++)
+    {
+        if (q.front()->left != nullptr) {
+            q.push(q.front()->left);
+        }
+        if (q.front()->right != nullptr) {
+            q.push(q.front()->right);
+        }
+        cout << q.front()->key << ' ';
+        q.pop();
+    }
+}
