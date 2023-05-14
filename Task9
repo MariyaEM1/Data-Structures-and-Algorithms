@@ -1,0 +1,58 @@
+//https://www.hackerrank.com/contests/sda-hw-3/challenges/challenge-3074
+
+#include <cmath>
+#include <cstdio>
+#include <vector>
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+int main() {  
+   int n, m, n1, m1 ;
+    vector<int> theme;
+    vector<int> team;
+    vector<int> v;
+    cin >> n >> m;
+    for (int i = 0; i < n; i++)
+    {
+        cin >> n1;
+        theme.push_back(n1);
+    }
+    for (int i = 0; i < m; i++)
+    {
+        cin >> m1;
+        team.push_back(m1);
+    }
+    sort(theme.begin(), theme.end());
+
+    for (int i = 0; i < m; i++)
+    {
+        auto index= lower_bound(theme.begin(), theme.end(), team[i]);
+        int idx=index-theme.begin();
+        if (idx > 0 && idx < n) {
+            if (theme[idx] == team[i])
+            {
+                v.push_back(theme[idx]);
+            }
+            else if (theme[idx] - team[i] >= team[i] - theme[idx-1])
+            {
+                v.push_back(theme[idx - 1]);
+            }
+            else{
+                v.push_back(theme[idx]);
+            }
+        }
+        if (idx < 1) {
+            v.push_back(theme[idx]);
+        }
+        if (idx > n-1) {
+            v.push_back(theme[idx - 1]);
+        }
+    }
+    for (int i = 0; i < m; i++)
+    {
+        cout << v[i]<<endl;
+    }
+
+    return 0;
+}
