@@ -1,0 +1,91 @@
+//https://www.hackerrank.com/contests/sda-hw-10-2021/challenges/if-you-reading-this-get-baited
+
+#include <iostream>
+#include <vector>
+#include <list>
+#include <set>
+#include <cmath>
+#include <cstdio>
+#include <vector>
+#include <iostream>
+#include <algorithm>
+#include <iostream>
+#include <vector>
+#include <list>
+#include <set>
+
+using namespace std;
+
+vector<vector<int>>adj(10000);
+vector<bool> vis;
+vector<int> result;
+
+int n;
+vector<char> a(10000);
+vector<int> bef(10000);
+vector<int> cyc;
+
+int st, en;
+
+bool dfs(int v) {
+    a[v] = 1;
+    for (int u : adj[v]) {
+        if (a[u] == 0) {
+            bef[u] = v;
+            if (dfs(u))
+                return true;
+        }
+        else if (a[u] == 1) {
+            en = v;
+            st = u;
+            return true;
+        }
+    }
+    a[v] = 2;
+    return false;
+}
+int main() {
+    int Q, E, first, second;
+    cin >> Q;
+
+    while (Q--) {
+        cin >> E;
+        n = E;
+        while (E--) {
+            cin >> first;
+            cin >> second;
+            --first;
+            --second;
+            adj[first].push_back(second);
+        }
+        fill(a.begin(), a.end(), 0);
+        fill(bef.begin(), bef.end(), -1);
+        st = -1;
+        for (int i = 0; i < n; i++) {
+            if (a[i] == 0 && dfs(i)) {
+                break;
+            }
+        }
+        if (st == -1) {
+            result.push_back(0);
+        }
+        else {
+            cyc.push_back(st);
+            for (int v = en; v != st; v = bef[v]) {
+                cyc.push_back(v);
+            }
+            cyc.push_back(st);
+            reverse(cyc.begin(), cyc.end());
+
+            result.push_back(1);
+        }
+        cyc.clear();
+        adj.clear();
+        adj.resize(10000);
+    }
+    for (unsigned i = 0; i < result.size(); i++)
+    {
+        cout << result[i] << " ";
+    }
+    return 0;
+}
