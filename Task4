@@ -1,0 +1,58 @@
+//https://www.hackerrank.com/contests/sda-hw-2/challenges/challenge-3091/problem
+
+#include <cmath>
+#include <cstdio>
+#include <vector>
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+void swap(int* a, int* b)
+{
+    int t = *a;
+    *a = *b;
+    *b = t;
+}
+int partition(vector<int>& v, int low, int high) {
+    int pivot = v[high];
+    int i = low; // index of smaller element      
+    for (int j = low; j < high; j++) {
+        if (v[j] <= pivot) {
+            swap(&v[i], &v[j]);
+            i++;
+        }
+    }
+    swap(&v[i],&v[high]);
+    return i;
+}
+
+void sort(vector<int>& v, int low, int high)
+{
+    if (low < high)
+    {
+        int pi = partition(v, low, high);
+
+        sort(v, low, pi - 1);
+        sort(v, pi + 1, high);
+    }
+}
+
+int main()
+{
+    int N, price, employees;
+    long long sum = 0;
+    vector<int> prices;
+    cin >> N;
+    for (int i = 0; i < N; i++) {
+        cin >> price;
+        prices.push_back(price);
+    }
+    cin >> employees;
+    int l = 0;
+    sort(prices, l , N-1);
+    for (int i = 0; i < employees; i++) {
+        sum += prices[i];
+    }
+    cout << sum;
+    return 0;
+}
