@@ -1,0 +1,47 @@
+//https://www.hackerrank.com/contests/sda-hw-2/challenges/challenge-3088
+
+#include <cmath>
+#include <cstdio>
+#include <vector>
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+int main() {
+    vector<char> num;
+    vector<char> down;
+    vector<char> up;
+    vector<char> all;
+    
+    int N;
+    char item;
+    cin >> N;
+    for (int i = 0; i < N; i++) {
+        cin >> item;
+        all.push_back(item);
+    }
+    for (int i = 0; i < N; i++) {
+        if (all[i] >= 'a' && all[i] <= 'z') {
+            down.push_back(all[i]);
+        }
+        if (all[i] >= 'A' && all[i] <= 'Z') {
+            up.push_back(all[i]);
+        }
+        if (all[i] >= '0' && all[i] <= '9') {
+            num.push_back(all[i]);
+        }
+    }
+    sort(num.begin(), num.end());
+    sort(down.begin(), down.end());
+    sort(up.begin(), up.end());
+    for (unsigned i = 0; i < num.size(); i++) {
+        cout << num[i];
+    }
+    for (unsigned i = 0; i < down.size(); i++) {
+        cout << down[i];
+    }
+    for (unsigned i = 0; i < up.size(); i++) {
+        cout << up[i];
+    }
+    return 0;
+}
