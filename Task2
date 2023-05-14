@@ -1,0 +1,51 @@
+//https://www.hackerrank.com/contests/sda-hw-1/challenges/challenge-3065
+
+#include <cmath>
+#include <cstdio>
+#include <vector>
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+int main() {
+        vector<int> numbers;
+    int N;
+    int num;
+    cin >> N;
+    bool mis_1=0;
+    for (int i = 0; i < N; i++) {
+        cin>>num;
+        numbers.push_back(num);
+    }
+    for (int i = 0; i < N; i++) {
+        if (numbers[i] == 1) {
+            mis_1 = 1;
+        }
+    }
+    sort(numbers.begin(), numbers.end());
+    for (int i = 0; i < N; i++) {
+        if (numbers[i] > 0) {
+            if (mis_1 == 0) {
+                cout << 1;
+                break;
+            }
+            if (i < N - 1) {
+                if (numbers[i + 1] - 1 == numbers[i] || numbers[i] == numbers[i + 1]) {
+                    continue;
+                }
+                else {
+                    if (mis_1 == 1) {
+                        cout << numbers[i] + 1;
+                        break;
+                    }
+                }
+            }            
+            if (mis_1 == 1) {
+                cout << numbers[N - 1] + 1;
+            }
+        }
+    }
+    if (numbers[N - 1] <= 0) {
+        cout << 1;
+    }
+}
