@@ -1,0 +1,65 @@
+//https://www.hackerrank.com/contests/sda-hw-4/challenges/insert-a-node-at-a-specific-position-in-a-linked-list
+
+/*
+ * Complete the 'insertNodeAtPosition' function below.
+ *
+ * The function is expected to return an INTEGER_SINGLY_LINKED_LIST.
+ * The function accepts following parameters:
+ *  1. INTEGER_SINGLY_LINKED_LIST llist
+ *  2. INTEGER data
+ *  3. INTEGER position
+ */
+
+/*
+ * For your reference:
+ *
+ * SinglyLinkedListNode {
+ *     int data;
+ *     SinglyLinkedListNode* next;
+ * };
+ *
+ */
+/*void push_front(int data){
+    SinglyLinkedListNode* newHead = new SinglyLinkedListNode*(data, head);
+    head = newHead;
+    if(tail==nullptr){
+        tail=head;
+    }
+}*/
+
+SinglyLinkedListNode* insertNodeAtPosition(SinglyLinkedListNode* llist, int data, int position) {
+    
+    if(position==0){
+        SinglyLinkedListNode* node = new SinglyLinkedListNode(data);
+        node->next=llist->next;
+        return node;
+    }
+    
+    else if(llist == nullptr){
+        cout<<"Invalid insert index, list is empty";
+    }
+    SinglyLinkedListNode* current=llist;
+    SinglyLinkedListNode* previous=nullptr;
+    for(int i=0; i<position; i++){
+        if(current!=nullptr){
+            previous=current;
+            current=current->next;
+            
+        }
+        else{
+            throw out_of_range("Cannot insert");
+        }
+    }
+    SinglyLinkedListNode* n = new SinglyLinkedListNode(data);
+    previous->next = n;
+    n->next=current;
+    SinglyLinkedListNode* t=llist;
+    while(t->next!=nullptr){
+        t=t->next;
+    }
+    if(t==previous){
+        t=previous->next;
+    }
+    
+    return llist;
+}
