@@ -1,0 +1,72 @@
+//https://www.hackerrank.com/contests/sda-hw-5/challenges/challenge-2695
+
+#include <cmath>
+#include <cstdio>
+#include <vector>
+#include <iostream>
+#include <algorithm>
+#include <iostream>
+#include<queue>
+#include<stack>
+#include<vector>
+using namespace std;
+
+int MinInQue(queue<int> q) {
+    int minEl=q.front();
+    while (!q.empty()) {
+        if (q.front()<minEl) {
+            minEl = q.front();
+        }
+        q.pop();
+    }
+    return minEl;
+}
+
+long long sum(vector<int>& nums, int d) {
+    queue<int> MinEl;
+    long long Sum = 0;
+    int size = nums.size();
+    for (int i = 0; i < d; i++)
+    {
+        MinEl.push(nums[i]);
+    }
+    int m = MinInQue(MinEl);
+    Sum = m;
+    for (int i = d; i < size; i++)
+    {
+        if (MinEl.front() != m){
+            if (m > nums[i]) {
+                m = nums[i];
+                MinEl.pop();
+                MinEl.push(nums[i]);
+                Sum += m;
+                continue;
+            }
+            else  {
+                Sum += m;
+                MinEl.pop();
+                MinEl.push(nums[i]);
+
+                continue;
+            }
+        }
+        MinEl.pop();
+        MinEl.push(nums[i]);
+        m= MinInQue(MinEl);
+        Sum += m;
+    }
+    return Sum;
+}
+
+int main()
+{
+    int N, num, d;
+    cin >> N>>d;
+    vector<int> nums;
+    for (int i = 0; i < N; i++)
+    {
+        cin >> num;
+        nums.push_back(num);
+    }
+    cout << sum(nums, d);
+}
