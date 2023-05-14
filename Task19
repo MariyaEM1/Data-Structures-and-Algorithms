@@ -1,0 +1,35 @@
+//https://www.hackerrank.com/contests/sda-hw-6-2021/challenges/1-266
+
+#include <cmath>
+#include <cstdio>
+#include <vector>
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+vector<int>tree[1000000];
+int counter = 0;
+void SumP(int top) {
+    for (auto x : tree[top]) {
+        SumP(x);
+        counter++;
+    }
+}
+
+int main()
+{
+    int N, a, b, n=0;
+    cin >> N;
+    int m=0;
+    m = N-1;
+    while (m--) {
+        cin >> a >> b;
+        tree[a].push_back(b);
+    }    
+    for (int i = 0; i < N; i++)
+    {
+        counter = 0;
+        SumP(i);
+        cout << counter << ' ';
+    }
+}
