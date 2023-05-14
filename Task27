@@ -1,0 +1,69 @@
+//https://www.hackerrank.com/contests/sda-hw-11-2021/challenges/shortest-paths-2/problem
+
+#include <cmath>
+#include <cstdio>
+#include <vector>
+#include <iostream>
+#include <algorithm>
+#include <queue>
+#include<climits>
+using namespace std;
+
+const long long N = 100001;
+pair<long long, long long> dist[N];
+vector<pair<long long, long long>>adjacencyList[N];
+
+void shortestPathDijkstra(long long v)
+{
+    for (long long i = 0; i < N; i++) dist[i].first = LLONG_MAX;
+
+    dist[v].first = 0;
+    dist[v].second = 1;
+
+    priority_queue< pair<long long, long long>, vector <pair<long long, long long>>, greater<pair<long long, long long>> > pq;
+    pq.push({ 0,v });
+
+    while (!pq.empty())
+    {
+        long long current = pq.top().second;
+        long long costToCurrent = pq.top().first;
+        pq.pop();
+
+        for (pair<long long, long long> neighbour : adjacencyList[current])
+        {
+
+            long long child = neighbour.first;
+            long long costToChildOfCurrent = neighbour.second;
+
+            if (dist[child].first > costToCurrent + costToChildOfCurrent)
+            {
+                dist[child].first = costToCurrent + costToChildOfCurrent;
+                dist[child].second = dist[current].second% 1000000007;
+                pq.push({ costToChildOfCurrent + costToCurrent, child });
+            }
+            else if (dist[child].first == costToCurrent + costToChildOfCurrent) {
+                dist[child].second = (dist[child].second + dist[current].second) % 1000000007;
+            }
+        }
+    }
+
+}
+
+int main()
+{
+    long long numberOfEdges = 0, numberOfVertices = 0, costToChildOfCurrent = 0;
+    long long from = 0, to = 0;
+    cin >> numberOfVertices >> numberOfEdges;
+    while (numberOfEdges)
+    {
+        cin >> from >> to >> costToChildOfCurrent;
+        adjacencyList[from].push_back({ to, costToChildOfCurrent });
+        numberOfEdges--;
+    }
+
+    shortestPathDijkstra(1);
+    if (dist[numberOfVertices].second)
+        cout << dist[numberOfVertices].first << " " << dist[numberOfVertices].second;
+    else cout << -1 << " " << 0;
+    return 0;
+}
