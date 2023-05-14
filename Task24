@@ -1,0 +1,65 @@
+//https://www.hackerrank.com/contests/sda-hw-9-2021/challenges/longest-match
+
+#include <cmath>
+#include <cstdio>
+#include <vector>
+#include <iostream>
+#include <algorithm>
+#include <iostream>
+#include <string>
+using namespace std;
+int LenRep(string&A, string& B, int startA,  int startB, int windowS) 
+{
+    int lenRep = 0;
+    int SizeLenRep = 0;
+    for (int i = 0; i < windowS; ++i)
+    {
+        if (A[startA + i] != B[startB + i]) {
+
+            lenRep = 0;
+        }
+        else {
+            lenRep++;
+        }
+        if (lenRep > SizeLenRep) {
+            SizeLenRep = lenRep;
+        }
+    }
+    return SizeLenRep;
+}
+int main()
+{
+    string A;
+    string B;
+    cin >> A >> B;
+    int SA = A.length();
+    int SB = B.length();
+    int windowSize = 0, ResultSize = 0, a = 0;
+    int i = 0, j = 0;
+    while (i < SA)
+    {
+        windowSize = min(SB, SA - i);
+        if (windowSize < ResultSize) {
+            break;
+        }
+        a = LenRep(A, B, i, 0, windowSize);
+        if (a > ResultSize) {
+            ResultSize = a;
+        }
+        i++;
+    }
+
+    while (j < B.size())
+    {
+        windowSize = min(SA, SB - i);
+        if (windowSize < ResultSize) {
+            break;
+        }
+        a = LenRep(A, B, 0, i, windowSize);
+        if (a > ResultSize) {
+            ResultSize = a;
+        }
+        j++;
+    }
+    cout<< ResultSize;
+}
