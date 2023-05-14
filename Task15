@@ -1,0 +1,124 @@
+//https://www.hackerrank.com/contests/sda-hw-4/challenges/exam-5-1
+
+#include <cmath>
+#include <cstdio>
+#include <vector>
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+#include<iostream>
+using namespace std;
+
+class Node {
+public:
+    Node* previous;
+    Node* next;
+    int data;
+    Node(int d, Node* n = nullptr, Node* p = nullptr) {
+       next = n;
+       previous = p;
+       data = d;
+    }
+
+};
+class List {
+public:
+    int size;
+    Node* head;
+    Node* middle;
+    Node* tail;
+
+    List() {
+        size = 0;
+        head = nullptr;
+        middle = nullptr;
+        tail = nullptr;
+    }
+    void del() {
+        if (head == tail) {
+            size = 0;
+            head = nullptr;
+            middle = nullptr;
+            tail = nullptr;
+            return;
+        }
+        Node* dell = tail;
+        if (tail != nullptr) {
+            tail = tail->previous;
+            tail->next = nullptr;
+            if (size % 2 == 0) {
+                middle = middle->previous;
+            }
+            size--;
+
+            delete dell;
+        }
+    }
+    void add(int num) {
+       
+        if (head == nullptr) {
+            size++;
+            head = new Node(num);
+            tail = head;
+        }
+        else {
+            Node* add = new Node(num);
+            add->previous = tail;
+            tail->next = add;
+            tail = tail->next;
+            size++;
+        }
+        if (size == 1) {
+            middle = head;
+        }
+        if (size % 2 == 0) {
+            middle = middle->next;
+        }
+    }
+};
+
+int main()
+{
+    List llist;
+    string AdGnMl;
+    int N, num;
+    cin >> N;
+    for (int i = 0; i < N; i++) {
+        cin >> AdGnMl;
+        if (AdGnMl == "add") {
+            cin >> num;
+            llist.add(num);
+
+        }
+        else if (AdGnMl == "gun") {
+            llist.del();
+        }
+        else if (AdGnMl == "milen") {
+            if (llist.head != nullptr && llist.size>1) {
+                Node* changetail = llist.middle->previous;
+                llist.head->previous = llist.tail;
+                llist.middle->previous = nullptr;
+                llist.tail->next = llist.head;
+                changetail->next = nullptr;
+                Node* prhead = llist.head;
+                Node* prtail = llist.tail;
+                llist.tail = changetail;
+                llist.head = llist.middle;
+                
+                if (llist.size % 2 != 0) {
+                llist.middle = prtail;
+                }
+                else {
+                    llist.middle = prhead;
+                }
+            }
+        }
+    }
+    cout << llist.size << endl;
+    while (llist.head != nullptr) {
+        cout<<llist.head->data;
+        cout << ' ';
+        llist.head = llist.head->next;
+    }
+}
