@@ -1,0 +1,115 @@
+//https://www.hackerrank.com/contests/sda-hw-10-2021/challenges/cinema-2021
+
+#include <cmath>
+#include <cstdio>
+#include <vector>
+#include <iostream>
+#include <algorithm>
+#include <iostream>
+#include <queue>
+#include <list>
+#include <set>
+
+using namespace std;
+vector<vector<int>> cinemaAll;
+vector<int> inAdInfected;
+vector<vector<int>> adInfected;
+vector<int> firstInfected;
+
+int main() {
+    int n, m, t = 0, k = 0, x, y;
+    int counti = 0;
+    vector<int> infected;
+    int result = 0;
+    cin >> n >> m;
+    cin >> t >> k;
+    result = n * m;
+    for (int i = 0; i < m; i++)
+    {
+        firstInfected.push_back(0);
+    }
+    for (int i = 0; i < n; i++)
+    {
+        cinemaAll.push_back(firstInfected);
+    }
+    for (int i = 0; i < k; i++)
+    {
+        cin >> x >> y;
+        --x;
+        --y;
+        inAdInfected.push_back(x);
+        inAdInfected.push_back(y);
+        inAdInfected.push_back(0);
+        adInfected.push_back(inAdInfected);
+        cinemaAll[x][y] = 1;
+
+        counti++;
+        inAdInfected.clear();
+    }
+    for (int min = 0; min < t; min++)
+    {
+        while (adInfected[0][2] == min)
+        {
+
+            if (adInfected[0][1] > 0 && cinemaAll[adInfected[0][0]][adInfected[0][1] - 1] == 0) {
+
+                cinemaAll[adInfected[0][0]][adInfected[0][1] - 1] = 1;
+
+                infected.push_back(adInfected[0][0]);
+                infected.push_back(adInfected[0][1] - 1);
+
+                infected.push_back(min + 1);
+
+                adInfected.push_back(infected);
+                infected.clear();
+                counti++;
+            }
+            if (adInfected[0][0] > 0 && cinemaAll[adInfected[0][0] - 1][adInfected[0][1]] == 0) {
+
+                cinemaAll[adInfected[0][0] - 1][adInfected[0][1]] = 1;
+
+                infected.push_back(adInfected[0][0] - 1);
+                infected.push_back(adInfected[0][1]);
+
+
+                infected.push_back(min + 1);
+
+                adInfected.push_back(infected);
+                infected.clear();
+                counti++;
+            }
+            if (adInfected[0][1] < m - 1 && cinemaAll[adInfected[0][0]][adInfected[0][1] + 1] == 0) {
+                cinemaAll[adInfected[0][0]][adInfected[0][1] + 1] = 1;
+
+                infected.push_back(adInfected[0][0]);
+                infected.push_back(adInfected[0][1] + 1);
+
+                infected.push_back(min + 1);
+
+                adInfected.push_back(infected);
+                infected.clear();
+                counti++;
+            }
+            if (adInfected[0][0] < n - 1 && cinemaAll[adInfected[0][0] + 1][adInfected[0][1]] == 0) {
+
+                cinemaAll[adInfected[0][0] + 1][adInfected[0][1]] = 1;
+
+                infected.push_back(adInfected[0][0] + 1);
+                infected.push_back(adInfected[0][1]);
+
+                infected.push_back(min + 1);
+
+                adInfected.push_back(infected);
+                infected.clear();
+                counti++;
+            }
+
+            adInfected.erase(adInfected.begin());
+        }
+        if (counti == result) {
+            break;
+        }
+    }
+    result -= counti;
+    cout << result;
+}
