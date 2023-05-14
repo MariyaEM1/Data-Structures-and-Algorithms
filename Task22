@@ -1,0 +1,51 @@
+//https://www.hackerrank.com/contests/sda-hw-8-2021/challenges/challenge-2727
+
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(nullptr);
+  	
+vector<pair<int, int>>tests;
+    multiset<pair<int, int>>testss;
+    int N;
+    long sbTime, lines;
+    long num2 = 0;
+    long S = 0;
+    long n = 0;
+    //int it = 0;
+    cin >> N;
+    for (int i = 0; i < N; i++)
+    {
+        cin >> sbTime >> lines;
+        pair<long, long> p;
+        p.first = sbTime;
+        p.second = lines;
+        tests.push_back(p);
+    }
+    sort(tests.begin(), tests.end());
+    num2 = tests[0].first;
+    for (int i = 0; i < N||testss.size();) {
+        while (tests[i].first <= num2) {
+            if (i == N) break;
+            pair<long, long> q;
+            q.first = tests[i].second;
+            q.second = i;
+            testss.insert(q);
+            i++;
+        }
+        if (!testss.empty()) {
+            n = testss.begin()->second;
+            testss.erase(testss.begin());
+
+            num2 += tests[n].second;
+            S = S + num2 - tests[n].first;
+        }
+        else {
+            num2 = tests[i].first;
+        }
+    }
+    cout << S / N << "\n"; 
+    return 0;
+}
