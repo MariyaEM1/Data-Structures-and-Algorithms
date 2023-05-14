@@ -1,0 +1,70 @@
+//https://www.hackerrank.com/contests/12-2/challenges/roads-5
+
+#include <cmath>
+#include <cstdio>
+#include <vector>
+#include <iostream>
+#include <algorithm>
+#include <iostream>
+
+using namespace std;
+
+vector<pair<int, int>> E;
+vector<int> p;
+
+void in(int N) {
+    for (int i = 0; i < N; ++i) {
+        p[i] = i;
+    }
+}
+
+int F(int v) {
+    if (p[v] == v) {
+        return p[v];
+    }
+    p[v] = F(p[v]);
+    return p[v];
+}
+
+void uni(int x, int y) {
+    int r1 = F(x), r2 = F(y);
+    if (r1 == r2) {
+        return;
+    }
+    else {
+        p[r2] = r1;
+    }
+}
+
+int main() {
+    int N, M, n1, n2, Q, c;
+   ios_base::sync_with_stdio(false);
+cin.tie(nullptr);
+
+    cin >> N >> M;
+    p.resize(N + 1);
+    for (int i = 0; i < M; i++) {
+        cin >> n1 >> n2;
+        E.push_back(make_pair(n1, n2));
+    }
+    in(N);
+    cin >> Q;
+
+    for (int i = 0; i < M; i++) {
+        uni(E[i].first, E[i].second);
+    }
+    for (int i = 0; i < Q; i++) {
+        cin >> c >> n1 >> n2;
+        if (c == 1) {
+            if (F(n1) == F(n2)) {
+                cout << 1;
+            }
+            else {
+                cout << 0;
+            }
+        }
+        else {
+            uni(n1, n2);
+        }
+    }
+}
