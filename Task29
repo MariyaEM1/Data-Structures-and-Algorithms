@@ -1,0 +1,100 @@
+//https://www.hackerrank.com/contests/12-2/challenges/2-146/problem
+
+#include <iostream>
+#include<utility>
+#include<algorithm>
+#include<vector>
+#include <cmath>
+#include <cstdio>
+
+using namespace std;
+
+long P[1000000], Depth[1000000], i;
+
+struct Edg {
+
+    long Fr;
+    long to;
+    long idx;
+
+    long us;
+    long pe;
+    inline bool operator<(const Edg& other) const {
+        if (this->us > other.us) {
+            return 0;
+        }
+        if (this->us < other.us) {
+            return 1;
+        }
+        return this->pe > other.pe;
+    }
+    void change(long fr, long t, long u, long p, long i) {
+        Fr = fr;
+        pe = p;
+        idx = i;
+        to = t;
+        us = u;
+    }
+    inline bool operator>(const Edg& rhs) { 
+        return rhs < *this; 
+    }
+};
+Edg edg[1000000];
+void init(long N) {
+    for (i = 0; i < N; i++) {
+        Depth[i] = 0;
+        P[i] = i;
+    }
+}
+long find(long v) {
+    if (P[v]==v) {
+        return P[v];
+    }
+    P[v] = find(P[v]);
+    return P[v];
+}
+void uni(long x, long y) {
+    
+    long r1 = find(x);
+
+    long r2 = find(y);
+
+    if (Depth[r2]<Depth[r1]) {
+        P[r2] = r1;
+    }
+    else {
+        P[r1] = r2;
+    }
+    if (Depth[r1] == Depth[r2]) {
+        Depth[r2]++;
+    }
+}
+void kruskal(long M, long N) {
+    init(N);
+    sort(edg, edg + M);
+    for (i = 0; i < M; i++) {
+
+        long F = edg[i].Fr;
+
+        long T = edg[i].to;
+
+        if (find(F) != find(T)) {
+            uni(F, T);
+            cout << edg[i].idx << endl;
+        }
+    }
+
+}
+int main()
+{
+    long M, N, n1, n2, n3, n4;
+    ios_base::sync_with_stdio(false);
+    cin.tie(nullptr);
+    cin >> N >> M;
+    for ( i = 0; i < M; i++) {
+        cin >> n1 >> n2 >> n3 >> n4;
+        edg[i].change(n1, n2, n3, n4, i + 1);
+
+    }
+    kruskal(M, N);
+}
