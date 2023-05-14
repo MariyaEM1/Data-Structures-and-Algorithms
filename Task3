@@ -1,0 +1,30 @@
+//https://www.hackerrank.com/contests/sda-hw-1/challenges/challenge-3068
+
+#include <cmath>
+#include <cstdio>
+#include <vector>
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+int main() {
+        string word;
+    char letter;
+    int number, count = 0;
+    int timesws, partOfWord;
+    cin >> word>>number>>letter;
+    timesws = number/word.length();
+    partOfWord = number - timesws*word.length();
+    for (unsigned i = 0; i < word.length(); i++) {
+        if (word[i] == letter) {
+            count++;
+        }
+    }
+    count *= timesws;
+    for (unsigned i = 0; i < partOfWord; i++) {
+        if (word[i] == letter) {
+            count++;
+        }
+    }
+    cout << count;
+}
