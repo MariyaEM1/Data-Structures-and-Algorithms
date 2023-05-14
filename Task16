@@ -1,0 +1,47 @@
+//https://www.hackerrank.com/contests/sda-hw-5/challenges/lekcii
+
+#include <cmath>
+#include <cstdio>
+#include <vector>
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+int counts[123];
+int idx[123];
+vector<int> al;
+
+void justOne(string& str) {
+    for (int i = 0; i < 123; i++) {
+        idx[i] = 0;
+
+    }
+    for (int i = 0; i < str.size(); i++) {
+
+        int num = str[i];
+        counts[num]++;
+        idx[num] = i;
+
+    }
+    for (int i = 0; i < 123; i++) {
+
+        if (counts[i] == 1) {
+
+            al.push_back(idx[i]);
+        }
+    }
+    return;
+}
+
+int main()
+{
+    string str;
+    cin >> str;
+    justOne(str);
+    sort(al.begin(), al.end());
+
+    for (int i = 0; i < al.size(); i++) {
+        cout << al[i] << " ";
+    }
+    return 0;
+}
